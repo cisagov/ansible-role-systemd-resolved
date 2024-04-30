@@ -21,12 +21,11 @@
 
 - name: Create /etc/resolv.conf symlink
   ansible.builtin.file:
+    # Do not apply any group, owner, or mode changes to src.
+    follow: false
     # If a file is already present at /etc/resolv.conf then just
     # delete it.
     force: true
-    group: root
-    mode: u=rw,g=r,o=r
-    owner: root
     path: /etc/resolv.conf
     src: /run/systemd/resolve/stub-resolv.conf
     state: link
