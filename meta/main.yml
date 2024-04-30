@@ -27,8 +27,9 @@ galaxy_info:
         - "2023"
     - name: Debian
       versions:
-        - buster
-        - bullseye
+        # These platforms do not provide systemd-resolved.
+        # - buster
+        # - bullseye
         - bookworm
         - trixie
     - name: Fedora
@@ -38,9 +39,10 @@ galaxy_info:
     - name: Kali
       versions:
         - "2023"
-    - name: Ubuntu
-      versions:
-        - focal
-        - jammy
+    # These platforms do not provide systemd-resolved.
+    # - name: Ubuntu
+    #   versions:
+    #     - focal
+    #     - jammy
   role_name: systemd_resolved
   standalone: true
