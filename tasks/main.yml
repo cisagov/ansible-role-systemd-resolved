@@ -1,2 +1,28 @@
 ---
-# tasks file for skeleton
+- name: Install systemd-resolved
+  ansible.builtin.package:
+    name:
+      - systemd-resolved
+
+- name: Ensure resolvconf is not installed
+  ansible.builtin.package:
+    name:
+      - resolvconf
+    state: absent
+
+- name: Create /etc/resolv.conf symlink
+  ansible.builtin.file:
+    # If a file is already present at /etc/resolv.conf then just
+    # delete it.
+    force: true
+    group: root
+    mode: u=rw,g=r,o=r
+    owner: root
+    path: /etc/resolv.conf
+    src: /run/systemd/resolve/stub-resolv.conf
+    state: link
+
+- name: Enable systemd-resolved
+  ansible.builtin.service:
+    enabled: true
+    name: systemd-resolved.service

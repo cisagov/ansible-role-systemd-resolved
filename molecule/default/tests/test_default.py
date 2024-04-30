@@ -4,7 +4,6 @@
 import os
 
 # Third-Party Libraries
-import pytest
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
@@ -12,7 +11,27 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 ).get_hosts("all")
 
 
-@pytest.mark.parametrize("x", [True])
-def test_packages(host, x):
-    """Run a dummy test, just to show what one would look like."""
-    assert x
+def test_packages(host):
+    """Verify that the expected packages are installed/uninstalled."""
+    assert host.package(
+        "systemd-resolved"
+    ).is_installed, "The package systemd-resolved is not installed."
+    assert not host.package(
+        "resolvconf"
+    ).is_installed, "The package resolvconf is installed."
+
+
+def test_symlink(host):
+    """Verify that /etc/resolv.conf is the expected symlink."""
+    f = host.file("/etc/resolv.conf")
+    assert f.is_symlink, "/etc/resolv.conf is not a symlink."
+    assert (
+        f.linked_to == "/run/systemd/resolve/stub-resolv.conf"
+    ), "/etc/resolv.conf is not a symlink to /run/systemd/resolve/stub-resolv.conf."
+
+
+def test_services(host):
+    """Verify that the expected services are present."""
+    s = host.service("systemd-resolved.service")
+    assert s.exists, "systemd-resolved.service does not exist."
+    assert s.is_enabled, "systemd-resolved.service is not enabled."
