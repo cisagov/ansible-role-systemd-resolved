@@ -4,6 +4,15 @@
     name:
       - systemd-resolved
 
+- name: Enable and start systemd-resolved
+  ansible.builtin.service:
+    enabled: true
+    name: systemd-resolved.service
+    # We must start the service to populate the files in
+    # /run/systemd/resolve/, which we need when we create a symlink
+    # below.
+    state: started
+
 - name: Ensure resolvconf is not installed
   ansible.builtin.package:
     name:
@@ -21,8 +30,3 @@
     path: /etc/resolv.conf
     src: /run/systemd/resolve/stub-resolv.conf
     state: link
-
-- name: Enable systemd-resolved
-  ansible.builtin.service:
-    enabled: true
-    name: systemd-resolved.service
