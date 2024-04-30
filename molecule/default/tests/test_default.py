@@ -25,9 +25,18 @@ def test_symlink(host):
     """Verify that /etc/resolv.conf is the expected symlink."""
     f = host.file("/etc/resolv.conf")
     assert f.is_symlink, "/etc/resolv.conf is not a symlink."
+
+    if host.system_info.distribution in ["amzn"]:
+        # /run/systemd/resolve/stub-resolv.conf is a symlink to
+        # /run/systemd/resolve/resolv.conf in AL2023, so the
+        # /etc/resolv.conf symlink resolves to the former.
+        symlink_target = "/run/systemd/resolve/resolv.conf"
+    else:
+        symlink_target = "/run/systemd/resolve/stub-resolv.conf"
+
     assert (
-        f.linked_to == "/run/systemd/resolve/stub-resolv.conf"
-    ), "/etc/resolv.conf is not a symlink to /run/systemd/resolve/stub-resolv.conf."
+        f.linked_to == symlink_target
+    ), f"/etc/resolv.conf is not a symlink to {symlink_target}."
 
 
 def test_services(host):
