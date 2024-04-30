@@ -4,23 +4,30 @@
   become: true
   become_method: ansible.builtin.sudo
   tasks:
-    - name: Copy /etc/resolv.conf to /tmp
+    - name: >-
+        Grab the current owner, group, and mode for the existing
+        /etc/resolv.conf
+      ansible.builtin.stat:
+        follow: true
+        path: /etc/resolv.conf
+      register: resolv_conf
+    - name: Copy /etc/resolv.conf to /tmp, preserving owner, group, and mode
       ansible.builtin.copy:
         dest: /tmp/resolv.conf
-        group: root
-        mode: u=rw,g=r,o=r
-        owner: root
+        group: "{{ resolv_conf.stat.gid }}"
+        mode: "{{ resolv_conf.stat.mode }}"
+        owner: "{{ resolv_conf.stat.uid }}"
         remote_src: true
         src: /etc/resolv.conf
     - name: Unmount /etc/resolv.conf
       ansible.posix.mount:
         path: /etc/resolv.conf
         state: unmounted
-    - name: Copy /tmp/resolv.conf to /etc
+    - name: Copy /tmp/resolv.conf to /etc, preserving owner, group, and mode
       ansible.builtin.copy:
         dest: /etc/resolv.conf
-        group: root
-        mode: u=rw,g=r,o=r
-        owner: root
+        group: "{{ resolv_conf.stat.gid }}"
+        mode: "{{ resolv_conf.stat.mode }}"
+        owner: "{{ resolv_conf.stat.uid }}"
         remote_src: true
         src: /tmp/resolv.conf
