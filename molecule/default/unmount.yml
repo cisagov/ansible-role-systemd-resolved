@@ -1,0 +1,26 @@
+---
+- name: Unmount /etc/resolv.conf
+  hosts: all
+  become: true
+  become_method: ansible.builtin.sudo
+  tasks:
+    - name: Copy /etc/resolv.conf to /tmp
+      ansible.builtin.copy:
+        dest: /tmp/resolv.conf
+        group: root
+        mode: u=rw,g=r,o=r
+        owner: root
+        remote_src: true
+        src: /etc/resolv.conf
+    - name: Unmount /etc/resolv.conf
+      ansible.posix.mount:
+        path: /etc/resolv.conf
+        state: unmounted
+    - name: Copy /tmp/resolv.conf to /etc
+      ansible.builtin.copy:
+        dest: /etc/resolv.conf
+        group: root
+        mode: u=rw,g=r,o=r
+        owner: root
+        remote_src: true
+        src: /tmp/resolv.conf
