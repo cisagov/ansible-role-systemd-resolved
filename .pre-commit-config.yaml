@@ -158,6 +158,11 @@ repos:
     hooks:
       - id: ansible-lint
         additional_dependencies:
+          # For some reason ansible-lint does not know about the
+          # existence of ansible.posix.mount unless ansible itself is
+          # added as an extra dependency.  I (jsf9k) believe this is
+          # because ansible is not installed when ansible-lint is
+          # installed.
           - ansible
       # files: molecule/default/playbook.yml
 
