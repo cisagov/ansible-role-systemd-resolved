@@ -9,3 +9,14 @@
 # situation.
 - name: Unmount /etc/resolv.conf
   ansible.builtin.import_playbook: unmount.yml
+
+# We require dig for one of our Molecule tests
+- name: Install dig
+  hosts: all
+  become: true
+  become_method: ansible.builtin.sudo
+  tasks:
+  - name: Install dig
+    ansible.builtin.package:
+      name:
+        - dnsutils

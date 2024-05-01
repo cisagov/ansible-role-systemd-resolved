@@ -2,8 +2,10 @@
 
 # Standard Python Libraries
 import os
+import re
 
 # Third-Party Libraries
+import pytest
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
@@ -51,3 +53,29 @@ def test_services(host):
     # assert s.exists, "systemd-resolved service does not exist."
     assert s.is_enabled, "systemd-resolved service is not enabled."
     assert s.is_running, "systemd-resolved service is not running."
+
+
+@pytest.mark.parametrize(
+    "dig_command",
+    [
+        "www.yahoo.com",
+        "AAAA www.yahoo.com",
+    ],
+)
+def test_dns_resolution(host, dig_command):
+    """Verify that the systemd-resolved resolver is being used by default."""
+    cmd = host.run(f"dig {dig_command}")
+    assert cmd.rc == 0, f"Command dig {dig_command} did not exit successfully."
+    # AL2023 is funky.  /run/systemd/resolve/stub-resolv.conf is
+    # itself a symlink to /run/systemd/resolve/resolv.conf, which
+    # points directly to the nameserver obtained from DNS.  I don't
+    # know why it does this, but our testing must work around it.
+    if host.system_info.distribution in ["amzn"]:
+        pass
+    else:
+        # Verify that the dig result came from the systemd-resolved
+        # service.
+        assert (
+            re.search(r"^;; SERVER: 127\.0\.0\.53#53", cmd.stdout, re.MULTILINE)
+            is not None
+        ), f"Command dig {dig_command} did not return a results from 127.0.0.53."
