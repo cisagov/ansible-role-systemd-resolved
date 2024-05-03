@@ -11,6 +11,7 @@
         follow: true
         path: /etc/resolv.conf
       register: resolv_conf
+
     - name: Copy /etc/resolv.conf to /tmp, preserving owner, group, and mode
       ansible.builtin.copy:
         dest: /tmp/resolv.conf
@@ -19,10 +20,12 @@
         owner: "{{ resolv_conf.stat.uid }}"
         remote_src: true
         src: /etc/resolv.conf
+
     - name: Unmount /etc/resolv.conf
       ansible.posix.mount:
         path: /etc/resolv.conf
         state: unmounted
+
     - name: Copy /tmp/resolv.conf to /etc, preserving owner, group, and mode
       ansible.builtin.copy:
         dest: /etc/resolv.conf
