@@ -158,12 +158,19 @@ repos:
     hooks:
       - id: ansible-lint
         additional_dependencies:
-          # For some reason ansible-lint does not know about the
-          # existence of ansible.posix.mount unless ansible itself is
-          # added as an extra dependency.  I (jsf9k) believe this is
-          # because ansible is not installed when ansible-lint is
-          # installed.
-          - ansible
+          # Per the documentation and the pre-commit hook
+          # configuration, ansible-lint does not know about modules
+          # that live outside of ansible-core.  See these links for
+          # more details:
+          # - https://github.com/ansible/ansible-lint/blob/main/src/ansiblelint/rules/syntax_check.md#syntax-checkunknown-module
+          # - https://github.com/ansible/ansible-lint/blob/ad0157eb38059b02d57458504340209f221e3189/.pre-commit-hooks.yaml#L14-L19
+          #
+          # Since ansible.posix.mount lives inside of the ansible
+          # package itself, we must include that package here.
+          #
+          # Note also that for consistency's sake we pull in the same
+          # version of ansible that is used in requirements-test.txt.
+          - ansible>=8,<10
       # files: molecule/default/playbook.yml
 
   # Terraform hooks
