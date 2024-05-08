@@ -3,13 +3,15 @@
 [![GitHub Build Status](https://github.com/cisagov/ansible-role-systemd-resolved/workflows/build/badge.svg)](https://github.com/cisagov/ansible-role-systemd-resolved/actions)
 [![CodeQL](https://github.com/cisagov/ansible-role-systemd-resolved/workflows/CodeQL/badge.svg)](https://github.com/cisagov/ansible-role-systemd-resolved/actions/workflows/codeql-analysis.yml)
 
-This is a skeleton project that can be used to quickly get a new
-[cisagov](https://github.com/cisagov) Ansible role GitHub project
-started.  This skeleton project contains
-[licensing information](LICENSE), as well as
-[pre-commit hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for an Ansible role.
+This is an Ansible role that installs and configures
+[`systemd-resolved`](https://wiki.archlinux.org/title/systemd-resolved).
+It performs the following actions:
+
+- Installs `systemd-resolved` and ensures that `resolvconf` is not
+  installed.
+- Creates an `/etc/resolv.conf` symlink that results in the
+  `systemd-resolved` stub DNS resolver being used by default for all
+  system DNS lookups.
 
 ## Requirements ##
 
@@ -42,7 +44,7 @@ where `requirements.yml` looks like:
 
 ```yaml
 ---
-- name: skeleton
+- name: systemd_resolved
   src: https://github.com/cisagov/ansible-role-systemd-resolved
 ```
 
@@ -61,17 +63,10 @@ Here's how to use it in a playbook:
   become: true
   become_method: sudo
   tasks:
-    - name: Include skeleton
+    - name: Include systemd-resolved
       ansible.builtin.include_role:
-        name: skeleton
+        name: systemd_resolved
 ```
-
-## New Repositories from a Skeleton ##
-
-Please see our [Project Setup guide](https://github.com/cisagov/development-guide/tree/develop/project_setup)
-for step-by-step instructions on how to start a new repository from
-a skeleton. This will save you time and effort when configuring a
-new repository!
 
 ## Contributing ##
 
@@ -93,4 +88,4 @@ with this waiver of copyright interest.
 
 ## Author Information ##
 
-First Last - <first.last@gwe.cisa.dhs.gov>
+Shane Frasier - <jeremy.frasier@gwe.cisa.dhs.gov>

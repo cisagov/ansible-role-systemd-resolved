@@ -1,2 +1,45 @@
 ---
-# tasks file for skeleton
+- name: Install systemd-resolved
+  ansible.builtin.package:
+    name:
+      - systemd-resolved
+
+- name: Enable and start systemd-resolved
+  ansible.builtin.service:
+    enabled: true
+    name: systemd-resolved.service
+    # We must start the service to populate the files in
+    # /run/systemd/resolve/, which we need when we create a symlink
+    # below.
+    state: started
+
+- name: Ensure resolvconf is not installed
+  ansible.builtin.package:
+    name:
+      - resolvconf
+    state: absent
+
+- name: Create /etc/resolv.conf symlink
+  ansible.builtin.file:
+    # Note that group, owner, and mode can modify src when follow=true
+    # and state=link are used:
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#parameter-follow
+    #
+    # In fact, I found this to be exactly the case when testing.  In
+    # other words, if I set follow=true (or left it as the default)
+    # without specifying group, owner, or mode then the group and
+    # owner of src (i.e., /run/systemd/resolve/stub-resolv.conf) would
+    # both be changed from systemd-resolved to root.
+    #
+    # In this case we definitely _do not_ want to modify the group,
+    # owner, or mode of src, and we do not need to follow any
+    # filesystem links to arrive at /etc/resolv.conf, so we simply
+    # override the default and set follow equal to false.  This will
+    # ensure that no group, owner, or mode changes are applied to src.
+    follow: false
+    # If a file is already present at /etc/resolv.conf then just
+    # delete it.
+    force: true
+    path: /etc/resolv.conf
+    src: /run/systemd/resolve/stub-resolv.conf
+    state: link

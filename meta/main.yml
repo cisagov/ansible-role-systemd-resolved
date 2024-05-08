@@ -6,11 +6,13 @@
 # See also cisagov/skeleton-ansible-role#153.
 dependencies: []
 galaxy_info:
-  author: First Last
+  author: Shane Frasier
   company: CISA Cyber Assessments
-  description: Skeleton Ansible role
+  description: Install and configure systemd-resolved
   galaxy_tags:
-    - skeleton
+    - resolved
+    - systemd
+    - systemdresolved
   license: CC0
   # With the release of version 2.10, Ansible finally correctly
   # identifies Kali Linux as being the Kali distribution of the Debian
@@ -25,8 +27,9 @@ galaxy_info:
         - "2023"
     - name: Debian
       versions:
-        - buster
-        - bullseye
+        # These platforms do not provide systemd-resolved.
+        # - buster
+        # - bullseye
         - bookworm
         - trixie
     - name: Fedora
@@ -36,9 +39,10 @@ galaxy_info:
     - name: Kali
       versions:
         - "2023"
-    - name: Ubuntu
-      versions:
-        - focal
-        - jammy
-  role_name: skeleton
+    # These platforms do not provide systemd-resolved.
+    # - name: Ubuntu
+    #   versions:
+    #     - focal
+    #     - jammy
+  role_name: systemd_resolved
   standalone: true

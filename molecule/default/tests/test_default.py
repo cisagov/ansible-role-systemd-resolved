@@ -2,6 +2,7 @@
 
 # Standard Python Libraries
 import os
+import re
 
 # Third-Party Libraries
 import pytest
@@ -12,7 +13,69 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 ).get_hosts("all")
 
 
-@pytest.mark.parametrize("x", [True])
-def test_packages(host, x):
-    """Run a dummy test, just to show what one would look like."""
-    assert x
+def test_packages(host):
+    """Verify that the expected packages are installed/uninstalled."""
+    assert host.package(
+        "systemd-resolved"
+    ).is_installed, "The package systemd-resolved is not installed."
+    assert not host.package(
+        "resolvconf"
+    ).is_installed, "The package resolvconf is installed."
+
+
+def test_symlink(host):
+    """Verify that /etc/resolv.conf is the expected symlink."""
+    f = host.file("/etc/resolv.conf")
+    assert f.is_symlink, "/etc/resolv.conf is not a symlink."
+
+    if host.system_info.distribution in ["amzn"]:
+        # /run/systemd/resolve/stub-resolv.conf is a symlink to
+        # /run/systemd/resolve/resolv.conf in AL2023, so the
+        # /etc/resolv.conf symlink resolves to the latter.
+        symlink_target = "/run/systemd/resolve/resolv.conf"
+    else:
+        symlink_target = "/run/systemd/resolve/stub-resolv.conf"
+
+    assert (
+        f.linked_to == symlink_target
+    ), f"/etc/resolv.conf is not a symlink to {symlink_target}."
+
+
+def test_services(host):
+    """Verify that the expected services are present."""
+    s = host.service("systemd-resolved")
+    # TODO - This assertion currently fails because of
+    # pytest-dev/pytest-testinfra#757.  Once
+    # pytest-dev/pytest-testinfra#754 has been merged and a new
+    # release is created the following line can be uncommented.
+    #
+    # See #3 for more details.
+    # assert s.exists, "systemd-resolved service does not exist."
+    assert s.is_enabled, "systemd-resolved service is not enabled."
+    assert s.is_running, "systemd-resolved service is not running."
+
+
+@pytest.mark.parametrize(
+    "dig_command",
+    [
+        "www.yahoo.com",
+        "AAAA www.yahoo.com",
+    ],
+)
+def test_dns_resolution(host, dig_command):
+    """Verify that the systemd-resolved resolver is being used by default."""
+    cmd = host.run(f"dig {dig_command}")
+    assert cmd.rc == 0, f"Command dig {dig_command} did not exit successfully."
+    # AL2023 is funky.  /run/systemd/resolve/stub-resolv.conf is
+    # itself a symlink to /run/systemd/resolve/resolv.conf, which
+    # points directly to the nameserver obtained from DNS.  I don't
+    # know why it does this, but our testing must work around it.
+    if host.system_info.distribution in ["amzn"]:
+        pass
+    else:
+        # Verify that the dig result came from the systemd-resolved
+        # service.
+        assert (
+            re.search(r"^;; SERVER: 127\.0\.0\.53#53", cmd.stdout, re.MULTILINE)
+            is not None
+        ), f"Command dig {dig_command} did not return a results from 127.0.0.53."

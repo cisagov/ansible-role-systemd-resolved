@@ -1,3 +1,22 @@
 ---
 - name: Import upgrade playbook
   ansible.builtin.import_playbook: upgrade.yml
+
+# Docker bind mounts a file from the host to /etc/resolv.conf.  This
+# is inconvenient for us, since we need to create a symlink at
+# /etc/resolv.conf.  At the same time, we don't want to break DNS.
+# The playbook being imported contains a workaround for this
+# situation.
+- name: Unmount /etc/resolv.conf
+  ansible.builtin.import_playbook: unmount.yml
+
+# We require dig for one of our Molecule tests
+- name: Install dig
+  hosts: all
+  become: true
+  become_method: ansible.builtin.sudo
+  tasks:
+  - name: Install dig
+    ansible.builtin.package:
+      name:
+        - dnsutils
