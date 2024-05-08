@@ -31,7 +31,7 @@ def test_symlink(host):
     if host.system_info.distribution in ["amzn"]:
         # /run/systemd/resolve/stub-resolv.conf is a symlink to
         # /run/systemd/resolve/resolv.conf in AL2023, so the
-        # /etc/resolv.conf symlink resolves to the former.
+        # /etc/resolv.conf symlink resolves to the latter.
         symlink_target = "/run/systemd/resolve/resolv.conf"
     else:
         symlink_target = "/run/systemd/resolve/stub-resolv.conf"
