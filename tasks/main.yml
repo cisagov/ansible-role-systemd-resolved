@@ -16,6 +16,20 @@
     name:
       - systemd-resolved
 
+- name: Set DNSStubListener in the systemd-resolved configuration file
+  community.general.ini_file:
+    # This config file should already exist, and putting false here
+    # allows us to avoid ansible-lint warnings about needing to
+    # specify the group, owner, and mode of the file.
+    create: false
+    # This is just to maintain the look and feel of the file as
+    # provided by systemd-resolved.
+    no_extra_spaces: true
+    option: DNSStubListener
+    path: /etc/systemd/resolved.conf
+    section: Resolve
+    value: "{{ systemd_resolved_dns_stub_listener }}"
+
 - name: Enable and start systemd-resolved
   ansible.builtin.service:
     enabled: true

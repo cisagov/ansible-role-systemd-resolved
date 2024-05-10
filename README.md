@@ -10,6 +10,8 @@ It performs the following actions:
 - Installs `systemd-resolved` and ensures that `resolvconf` is not
   installed.
 - Creates an `/etc/resolv.conf` symlink.
+- Optionally disables the `systemd-resolved` stub DNS resolver that
+  listens at `127.0.0.53`.
 
 ## Requirements ##
 
@@ -19,7 +21,8 @@ None.
 
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| systemd_resolved_resolv_conf_filename | The location of the target to which /etc/resolv.conf will be symlinked.  Note that `dynamic_resolv_conf_target_dir` and `static_resolv_conf_target_dir` are role vars that are available for use when defining this variable.  See [here](https://man.archlinux.org/man/systemd-resolved.8#/ETC/RESOLV.CONF) for more information. | `"{{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf"` | No |
+| systemd_resolved_dns_stub_listener | The value to use for the DNSStubListener value in the `systemd-resolved` configuration file.  Must be `tcp`, `udp`, or a boolean value.  See [here](https://man.archlinux.org/man/resolved.conf.5.en) for more information. | `"yes"` | No |
+| systemd_resolved_resolv_conf_filename | The location of the target to which `/etc/resolv.conf` will be symlinked.  Note that `dynamic_resolv_conf_target_dir` and `static_resolv_conf_target_dir` are role vars that are available for use when defining this variable.  See [here](https://man.archlinux.org/man/systemd-resolved.8#/ETC/RESOLV.CONF) for more information. | `"{{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf"` | No |
 <!--
 | required_variable | Describe its purpose. | n/a | Yes |
 -->

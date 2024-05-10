@@ -1,4 +1,7 @@
 ---
+# The location of the systemd-resolved configuration file.
+config_file: /etc/systemd/resolved.conf
+
 # The directory where systemd-resolved stores the _dynamic_
 # resolv.conf symlink targets it provides.
 dynamic_resolv_conf_target_dir: /run/systemd/resolve

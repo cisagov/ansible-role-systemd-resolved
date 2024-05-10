@@ -10,13 +10,14 @@
 - name: Unmount /etc/resolv.conf
   ansible.builtin.import_playbook: unmount.yml
 
-# We require dig for one of our Molecule tests
+# We require dig and netstat for our Molecule tests
 - name: Install dig
   hosts: all
   become: true
   become_method: ansible.builtin.sudo
   tasks:
-  - name: Install dig
+  - name: Install some tools that are required for testing
     ansible.builtin.package:
       name:
         - dnsutils
+        - net-tools
