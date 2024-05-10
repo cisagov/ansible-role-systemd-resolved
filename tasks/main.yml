@@ -1,4 +1,20 @@
 ---
+- name: Verify role variables
+  block:
+    - name: Verify value of systemd_resolved_dns_stub_listener
+      ansible.builtin.assert:
+        fail_msg: >
+          Invalid value for systemd_resolved_dns_stub_listener: {{
+          systemd_resolved_dns_stub_listener }}.  Valid values are the
+          strings tcp or udp, or a boolean value.
+        # True if any of the elements of conditions is true
+        that: conditions is any
+      vars:
+        conditions:
+          - systemd_resolved_dns_stub_listener is boolean
+          - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "tcp"
+          - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "udp"
+
 - name: Load var file with package names based on the OS type
   ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
