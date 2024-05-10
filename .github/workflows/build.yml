@@ -176,6 +176,7 @@ jobs:
       matrix:
         scenario:
           - default
+          - specify_resolv_conf_target
     steps:
       - id: harden-runner
         name: Harden the runner

@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include ansible-role-systemd-resolved
+      ansible.builtin.include_role:
+        name: ansible-role-systemd-resolved
+      vars:
+        systemd_resolved_resolv_conf_filename: "{{ dynamic_resolv_conf_target_dir }}/resolv.conf"

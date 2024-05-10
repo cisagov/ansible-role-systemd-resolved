@@ -9,9 +9,7 @@ It performs the following actions:
 
 - Installs `systemd-resolved` and ensures that `resolvconf` is not
   installed.
-- Creates an `/etc/resolv.conf` symlink that results in the
-  `systemd-resolved` stub DNS resolver being used by default for all
-  system DNS lookups.
+- Creates an `/etc/resolv.conf` symlink.
 
 ## Requirements ##
 
@@ -19,12 +17,10 @@ None.
 
 ## Role Variables ##
 
-None.
-
-<!--
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| optional_variable | Describe its purpose. | `default_value` | No |
+| systemd_resolved_resolv_conf_filename | The location of the target to which /etc/resolv.conf will be symlinked.  Note that `dynamic_resolv_conf_target_dir` and `static_resolv_conf_target_dir` are role vars that are available for use when defining this variable.  See [here](https://man.archlinux.org/man/systemd-resolved.8#/ETC/RESOLV.CONF) for more information. | `"{{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf"` | No |
+<!--
 | required_variable | Describe its purpose. | n/a | Yes |
 -->
 

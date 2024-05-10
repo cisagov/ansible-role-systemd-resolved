@@ -1,4 +1,16 @@
 ---
+- name: Load var file with package names based on the OS type
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}_{{ ansible_distribution_release }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        - default.yml
+      paths:
+        - "{{ role_path }}/vars"
+
 - name: Install systemd-resolved
   ansible.builtin.package:
     name:
@@ -41,5 +53,5 @@
     # delete it.
     force: true
     path: /etc/resolv.conf
-    src: /run/systemd/resolve/stub-resolv.conf
+    src: "{{ systemd_resolved_resolv_conf_filename }}"
     state: link
