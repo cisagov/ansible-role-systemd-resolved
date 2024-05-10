@@ -54,4 +54,4 @@ def test_dns_resolution(host, dig_command):
         assert (
             re.search(r"^;; SERVER: 127\.0\.0\.53#53", cmd.stdout, re.MULTILINE)
             is not None
-        ), f"Command dig {dig_command} did not return a results from 127.0.0.53."
+        ), f"Command dig {dig_command} did not return a result from 127.0.0.53."
