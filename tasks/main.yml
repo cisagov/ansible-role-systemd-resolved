@@ -42,7 +42,7 @@
     # provided by systemd-resolved.
     no_extra_spaces: true
     option: DNSStubListener
-    path: /etc/systemd/resolved.conf
+    path: "{{ config_file }}"
     section: Resolve
     value: "{{ systemd_resolved_dns_stub_listener }}"
 
