@@ -1,4 +1,4 @@
-"""Module containing the tests for the default scenario."""
+"""Module containing the tests for the specify_resolv_conf_target scenario."""
 
 # Standard Python Libraries
 import os

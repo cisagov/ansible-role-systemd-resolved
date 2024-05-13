@@ -1,4 +1,4 @@
-"""Module containing the tests for the default scenario."""
+"""Module containing the tests for the disable_stub_resolver scenario."""
 
 # Standard Python Libraries
 import os
