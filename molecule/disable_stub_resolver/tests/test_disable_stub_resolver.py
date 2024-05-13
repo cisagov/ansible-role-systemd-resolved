@@ -14,7 +14,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def test_port_53_listener(host):
     """Verify that nothing is listening on port 53."""
     # Have netstat output all TCP and UDP IPv4 listeners.
-    netstat_cmd = "netstat --protocol inet --listening --tcp --udp --numeric"
+    netstat_cmd = "netstat --protocol inet --listening --numeric --tcp --udp "
     # Skip the first two lines of the output.
     tail_cmd = "tail --lines +3"
     # Grab only the 4th column.
