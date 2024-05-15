@@ -13,16 +13,6 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 ).get_hosts("all")
 
 
-def test_packages(host):
-    """Verify that the expected packages are installed/uninstalled."""
-    assert host.package(
-        "systemd-resolved"
-    ).is_installed, "The package systemd-resolved is not installed."
-    assert not host.package(
-        "resolvconf"
-    ).is_installed, "The package resolvconf is installed."
-
-
 def test_symlink(host):
     """Verify that /etc/resolv.conf is the expected symlink."""
     f = host.file("/etc/resolv.conf")
@@ -39,20 +29,6 @@ def test_symlink(host):
     assert (
         f.linked_to == symlink_target
     ), f"/etc/resolv.conf is not a symlink to {symlink_target}."
-
-
-def test_services(host):
-    """Verify that the expected services are present."""
-    s = host.service("systemd-resolved")
-    # TODO - This assertion currently fails because of
-    # pytest-dev/pytest-testinfra#757.  Once
-    # pytest-dev/pytest-testinfra#754 has been merged and a new
-    # release is created the following line can be uncommented.
-    #
-    # See #3 for more details.
-    # assert s.exists, "systemd-resolved service does not exist."
-    assert s.is_enabled, "systemd-resolved service is not enabled."
-    assert s.is_running, "systemd-resolved service is not running."
 
 
 @pytest.mark.parametrize(
@@ -78,4 +54,4 @@ def test_dns_resolution(host, dig_command):
         assert (
             re.search(r"^;; SERVER: 127\.0\.0\.53#53", cmd.stdout, re.MULTILINE)
             is not None
-        ), f"Command dig {dig_command} did not return a results from 127.0.0.53."
+        ), f"Command dig {dig_command} did not return a result from 127.0.0.53."

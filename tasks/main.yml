@@ -1,8 +1,50 @@
 ---
+- name: Verify role variables
+  block:
+    - name: Verify value of systemd_resolved_dns_stub_listener
+      ansible.builtin.assert:
+        fail_msg: >
+          Invalid value for systemd_resolved_dns_stub_listener: {{
+          systemd_resolved_dns_stub_listener }}.  Valid values are the
+          strings tcp or udp, or a boolean value.
+        # True if any of the elements of conditions is true
+        that: conditions is any
+      vars:
+        conditions:
+          - systemd_resolved_dns_stub_listener is boolean
+          - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "tcp"
+          - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "udp"
+
+- name: Load var file with OS-specific information
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}_{{ ansible_distribution_release }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        - default.yml
+      paths:
+        - "{{ role_path }}/vars"
+
 - name: Install systemd-resolved
   ansible.builtin.package:
     name:
       - systemd-resolved
+
+- name: Set DNSStubListener in the systemd-resolved configuration file
+  community.general.ini_file:
+    # This config file should already exist, and putting false here
+    # allows us to avoid ansible-lint warnings about needing to
+    # specify the group, owner, and mode of the file.
+    create: false
+    # This is just to maintain the look and feel of the file as
+    # provided by systemd-resolved.
+    no_extra_spaces: true
+    option: DNSStubListener
+    path: "{{ config_file }}"
+    section: Resolve
+    value: "{{ systemd_resolved_dns_stub_listener }}"
 
 - name: Enable and start systemd-resolved
   ansible.builtin.service:
@@ -41,5 +83,5 @@
     # delete it.
     force: true
     path: /etc/resolv.conf
-    src: /run/systemd/resolve/stub-resolv.conf
+    src: "{{ systemd_resolved_resolv_conf_filename }}"
     state: link

@@ -1,0 +1,25 @@
+---
+# The value to use for the DNSStubListener value in the
+# systemd-resolved configuration file.  Must be tcp, udp, or a boolean
+# value.
+#
+# See here for more information:
+# https://man.archlinux.org/man/resolved.conf.5.en
+systemd_resolved_dns_stub_listener: true
+
+# The location of the file to which /etc/resolv.conf will be
+# symlinked.  The symlink target should normally be one of the
+# following files provided by systemd-resolved:
+# 1. "{{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf"
+# 2. "{{ dynamic_resolv_conf_target_dir }}/resolv.conf"
+# 3. "{{ static_resolv_conf_target_dir }}/resolv.conf"
+#
+# Note that the values of dynamic_resolv_conf_target_dir and
+# static_resolv_conf_target_dir come from the role vars.
+#
+# In most cases you will want to use option 1 when using the
+# systemd-resolved stub DNS resolver (127.0.0.53) and option 2 when
+# using the DNS resolver provided via DHCP.  See here for more
+# information:
+# https://man.archlinux.org/man/systemd-resolved.8#/ETC/RESOLV.CONF
+systemd_resolved_resolv_conf_filename: "{{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf"

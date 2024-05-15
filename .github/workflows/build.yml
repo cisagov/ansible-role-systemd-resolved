@@ -176,6 +176,8 @@ jobs:
       matrix:
         scenario:
           - default
+          - disable_stub_resolver
+          - specify_resolv_conf_target
     steps:
       - id: harden-runner
         name: Harden the runner
