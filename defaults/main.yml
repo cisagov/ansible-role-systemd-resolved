@@ -7,6 +7,10 @@
 # https://man.archlinux.org/man/resolved.conf.5.en
 systemd_resolved_dns_stub_listener: true
 
+# The location of the systemd-resolved drop-in configuration file that
+# will be created.
+systemd_resolved_dropin_config_file: /etc/systemd/resolved.conf.d/99-ansible-role-systemd-resolved.conf
+
 # The location of the file to which /etc/resolv.conf will be
 # symlinked.  The symlink target should normally be one of the
 # following files provided by systemd-resolved:
