@@ -32,17 +32,26 @@
     name:
       - systemd-resolved
 
-- name: Set DNSStubListener in the systemd-resolved configuration file
+- name: >-
+    Ensure that the directory where the systemd-resolved drop-in will
+    live actually exists
+  ansible.builtin.file:
+    group: root
+    mode: 0755
+    owner: root
+    path: "{{ systemd_resolved_dropin_config_file | dirname }}"
+    state: directory
+
+- name: Set DNSStubListener config value for systemd-resolved
   community.general.ini_file:
-    # This config file should already exist, and putting false here
-    # allows us to avoid ansible-lint warnings about needing to
-    # specify the group, owner, and mode of the file.
-    create: false
-    # This is just to maintain the look and feel of the file as
-    # provided by systemd-resolved.
+    group: root
+    mode: 0644
+    # This is just to maintain the look and feel of the
+    # /etc/systemd/resolved.conf file as provided by systemd-resolved.
     no_extra_spaces: true
     option: DNSStubListener
-    path: "{{ config_file }}"
+    owner: root
+    path: "{{ systemd_resolved_dropin_config_file }}"
     section: Resolve
     value: "{{ systemd_resolved_dns_stub_listener }}"
 
