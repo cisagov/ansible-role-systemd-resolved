@@ -180,6 +180,24 @@ jobs:
         architecture:
           - amd64
           - arm64
+        exclude:
+            # TODO: Starting with systemd version 253 or 254 (I'm not
+            # sure which) it is no longer possible to start
+            # systemd-resolved.service under QEMU emulation.  We
+            # support this case, but we cannot test it until we have
+            # native ARM64 runners.
+            #
+            # See issue #10 for more details.
+            - architecture: arm64
+              platform: debian13-systemd
+            - architecture: arm64
+              platform: fedora39-systemd
+            - architecture: arm64
+              platform: fedora40-systemd
+            - architecture: arm64
+              platform: kali-systemd
+            - architecture: arm64
+              platform: ubuntu-24-systemd
         platform:
           - amazonlinux2023-systemd
           # These platforms do not provide systemd-resolved.
