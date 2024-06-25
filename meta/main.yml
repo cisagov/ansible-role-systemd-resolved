@@ -13,7 +13,7 @@ galaxy_info:
     - resolved
     - systemd
     - systemdresolved
-  license: CC0
+  license: CC0-1.0
   # With the release of version 2.10, Ansible finally correctly
   # identifies Kali Linux as being the Kali distribution of the Debian
   # OS family.  This simplifies a lot of things for roles that support
@@ -34,15 +34,16 @@ galaxy_info:
         - trixie
     - name: Fedora
       versions:
-        - "38"
         - "39"
+        - "40"
     - name: Kali
       versions:
         - "2023"
-    # These platforms do not provide systemd-resolved.
-    # - name: Ubuntu
-    #   versions:
-    #     - focal
-    #     - jammy
+    - name: Ubuntu
+      versions:
+        # These platforms do not provide systemd-resolved.
+        # - focal
+        # - jammy
+        - noble
   role_name: systemd_resolved
   standalone: true
