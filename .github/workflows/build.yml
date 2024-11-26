@@ -199,6 +199,8 @@ jobs:
             - architecture: arm64
               platform: fedora40-systemd
             - architecture: arm64
+              platform: fedora41-systemd
+            - architecture: arm64
               platform: kali-systemd
             - architecture: arm64
               platform: ubuntu-24-systemd
