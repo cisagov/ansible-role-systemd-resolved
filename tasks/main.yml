@@ -69,6 +69,9 @@
     name:
       - resolvconf
     state: absent
+  # TODO: For some reason dnf5 uninstalls systemd-resolved when I run
+  # this on Fedora 41.  See #12 for more information.
+  when: ansible_distribution != "Fedora" or ansible_distribution_major_version != "41"
 
 - name: Create /etc/resolv.conf symlink
   ansible.builtin.file:
