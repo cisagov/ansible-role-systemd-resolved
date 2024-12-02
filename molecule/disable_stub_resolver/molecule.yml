@@ -173,6 +173,30 @@ platforms:
   #   privileged: true
   #   volumes:
   #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-fedora41-ansible:latest
+    name: fedora41-systemd-amd64
+    platform: amd64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  # TODO: Starting with systemd version 253 or 254 (I'm not sure
+  # which) it is no longer possible to start systemd-resolved.service
+  # under QEMU emulation.  We support this case, but we cannot test it
+  # until we have native ARM64 runners.
+  #
+  # See issue #10 for more details.
+  # - cgroupns_mode: host
+  #   command: /lib/systemd/systemd
+  #   image: docker.io/geerlingguy/docker-fedora41-ansible:latest
+  #   name: fedora41-systemd-arm64
+  #   platform: arm64
+  #   pre_build_image: true
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
   # These platforms do not provide systemd-resolved.
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
