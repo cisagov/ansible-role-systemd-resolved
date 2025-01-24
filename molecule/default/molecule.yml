@@ -86,21 +86,15 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # TODO: Starting with systemd version 253 or 254 (I'm not sure
-  # which) it is no longer possible to start systemd-resolved.service
-  # under QEMU emulation.  We support this case, but we cannot test it
-  # until we have native ARM64 runners.
-  #
-  # See issue #10 for more details.
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/cisagov/docker-debian13-ansible:latest
-  #   name: debian13-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/cisagov/docker-debian13-ansible:latest
+    name: debian13-systemd-arm64
+    platform: arm64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
     image: docker.io/cisagov/docker-kali-ansible:latest
@@ -110,21 +104,15 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # TODO: Starting with systemd version 253 or 254 (I'm not sure
-  # which) it is no longer possible to start systemd-resolved.service
-  # under QEMU emulation.  We support this case, but we cannot test it
-  # until we have native ARM64 runners.
-  #
-  # See issue #10 for more details.
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/cisagov/docker-kali-ansible:latest
-  #   name: kali-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/cisagov/docker-kali-ansible:latest
+    name: kali-systemd-arm64
+    platform: arm64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
     image: docker.io/geerlingguy/docker-fedora39-ansible:latest
@@ -134,21 +122,15 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # TODO: Starting with systemd version 253 or 254 (I'm not sure
-  # which) it is no longer possible to start systemd-resolved.service
-  # under QEMU emulation.  We support this case, but we cannot test it
-  # until we have native ARM64 runners.
-  #
-  # See issue #10 for more details.
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora39-ansible:latest
-  #   name: fedora39-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-fedora39-ansible:latest
+    name: fedora39-systemd-arm64
+    platform: arm64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
     image: docker.io/geerlingguy/docker-fedora40-ansible:latest
@@ -158,21 +140,15 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # TODO: Starting with systemd version 253 or 254 (I'm not sure
-  # which) it is no longer possible to start systemd-resolved.service
-  # under QEMU emulation.  We support this case, but we cannot test it
-  # until we have native ARM64 runners.
-  #
-  # See issue #10 for more details.
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora40-ansible:latest
-  #   name: fedora40-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-fedora40-ansible:latest
+    name: fedora40-systemd-arm64
+    platform: arm64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
   - cgroupns_mode: host
     command: /lib/systemd/systemd
     image: docker.io/geerlingguy/docker-fedora41-ansible:latest
@@ -182,21 +158,15 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # TODO: Starting with systemd version 253 or 254 (I'm not sure
-  # which) it is no longer possible to start systemd-resolved.service
-  # under QEMU emulation.  We support this case, but we cannot test it
-  # until we have native ARM64 runners.
-  #
-  # See issue #10 for more details.
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-fedora41-ansible:latest
-  #   name: fedora41-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-fedora41-ansible:latest
+    name: fedora41-systemd-arm64
+    platform: arm64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
   # These platforms do not provide systemd-resolved.
   # - cgroupns_mode: host
   #   command: /lib/systemd/systemd
@@ -243,21 +213,15 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-  # TODO: Starting with systemd version 253 or 254 (I'm not sure
-  # which) it is no longer possible to start systemd-resolved.service
-  # under QEMU emulation.  We support this case, but we cannot test it
-  # until we have native ARM64 runners.
-  #
-  # See issue #10 for more details.
-  # - cgroupns_mode: host
-  #   command: /lib/systemd/systemd
-  #   image: docker.io/geerlingguy/docker-ubuntu2404-ansible:latest
-  #   name: ubuntu-24-systemd-arm64
-  #   platform: arm64
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  - cgroupns_mode: host
+    command: /lib/systemd/systemd
+    image: docker.io/geerlingguy/docker-ubuntu2404-ansible:latest
+    name: ubuntu-24-systemd-arm64
+    platform: arm64
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
 scenario:
   name: default
 verifier:
