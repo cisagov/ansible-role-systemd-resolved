@@ -26,4 +26,5 @@ systemd_resolved_dropin_config_file: /etc/systemd/resolved.conf.d/99-ansible-rol
 # using the DNS resolver provided via DHCP.  See here for more
 # information:
 # https://man.archlinux.org/man/systemd-resolved.8#/ETC/RESOLV.CONF
-systemd_resolved_resolv_conf_filename: "{{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf"
+systemd_resolved_resolv_conf_filename: >-
+  {{ dynamic_resolv_conf_target_dir }}/stub-resolv.conf

@@ -6,4 +6,5 @@
       ansible.builtin.include_role:
         name: ansible-role-systemd-resolved
       vars:
-        systemd_resolved_resolv_conf_filename: "{{ dynamic_resolv_conf_target_dir }}/resolv.conf"
+        systemd_resolved_resolv_conf_filename: >-
+          {{ dynamic_resolv_conf_target_dir }}/resolv.conf

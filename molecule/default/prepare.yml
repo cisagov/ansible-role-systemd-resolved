@@ -58,8 +58,8 @@
   become: true
   become_method: ansible.builtin.sudo
   tasks:
-  - name: Install some tools that are required for testing
-    ansible.builtin.package:
-      name:
-        - dnsutils
-        - net-tools
+    - name: Install some tools that are required for testing
+      ansible.builtin.package:
+        name:
+          - dnsutils
+          - net-tools

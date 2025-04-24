@@ -12,7 +12,12 @@
       vars:
         conditions:
           - systemd_resolved_dns_stub_listener is boolean
+          # yamllint doesn't like these next two lines because they
+          # are so long, but there is no clean way to shorten them.
+          #
+          # yamllint disable-line rule:line-length
           - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "tcp"
+          # yamllint disable-line rule:line-length
           - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "udp"
 
 - name: Load var file with OS-specific information
@@ -37,7 +42,7 @@
     live actually exists
   ansible.builtin.file:
     group: root
-    mode: 0755
+    mode: u=rwx,g=rx,o=rx
     owner: root
     path: "{{ systemd_resolved_dropin_config_file | dirname }}"
     state: directory
@@ -45,7 +50,7 @@
 - name: Set DNSStubListener config value for systemd-resolved
   community.general.ini_file:
     group: root
-    mode: 0644
+    mode: u=rw,g=r,o=r
     # This is just to maintain the look and feel of the
     # /etc/systemd/resolved.conf file as provided by systemd-resolved.
     no_extra_spaces: true
