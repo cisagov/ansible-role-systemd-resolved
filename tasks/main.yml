@@ -12,7 +12,12 @@
       vars:
         conditions:
           - systemd_resolved_dns_stub_listener is boolean
+          # yamllint doesn't like these next two lines because they
+          # are so long, but there is no clean way to shorten them.
+          #
+          # yamllint disable-line rule:line-length
           - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "tcp"
+          # yamllint disable-line rule:line-length
           - systemd_resolved_dns_stub_listener is string and systemd_resolved_dns_stub_listener == "udp"
 
 - name: Load var file with OS-specific information
