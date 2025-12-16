@@ -1,6 +1,7 @@
 # ansible-role-systemd-resolved #
 
 [![GitHub Build Status](https://github.com/cisagov/ansible-role-systemd-resolved/workflows/build/badge.svg)](https://github.com/cisagov/ansible-role-systemd-resolved/actions)
+[![License](https://img.shields.io/github/license/cisagov/ansible-role-systemd-resolved)](https://spdx.org/licenses/)
 [![CodeQL](https://github.com/cisagov/ansible-role-systemd-resolved/workflows/CodeQL/badge.svg)](https://github.com/cisagov/ansible-role-systemd-resolved/actions/workflows/codeql-analysis.yml)
 
 This is an Ansible role that installs and configures
