@@ -42,7 +42,7 @@ galaxy_info:
         - "2023"
     - name: Ubuntu
       versions:
-        # These platform does not provide systemd-resolved.
+        # This platform does not provide systemd-resolved.
         # - jammy
         - noble
         - resolute
