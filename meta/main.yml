@@ -42,8 +42,9 @@ galaxy_info:
         - "2023"
     - name: Ubuntu
       versions:
-        # These platforms do not provide systemd-resolved.
+        # This platform does not provide systemd-resolved.
         # - jammy
         - noble
+        - resolute
   role_name: systemd_resolved
   standalone: true
